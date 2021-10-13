@@ -1,0 +1,21 @@
+<link rel="stylesheet" type="text/css" media="screen" href="/static/home.css">
+<body>
+    <header class="header">
+        <div class="header_icons">
+            <div>
+                <img src="/static/images/icons/profile.png">
+            </div>
+            <div>
+                <a  href="{{ url_for('home') }}">
+                    <img src="/static/images/icons/profile.png">
+                </a>
+            </div>
+            <div>
+                <img src="/static/images/icons/profile.png">
+            </div>
+        </div>
+    </header>  
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>

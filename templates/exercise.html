@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="exercise_body">
+    <p class="page_title">{{ exercise }}</p>
+    <div>
+        <div class="display_max">
+            <p>Max:</p>
+            <p>1 x 100 kg</p>
+        </div>
+        <div class="listing_runs">
+            <p>Fyrri æfing 27. maí</p>
+            <div>
+                <p>7 x 70 kg</p>
+                <p>5 x 80 kg</p>
+                <p>4 x 90 kg</p>
+                <p>1 x 100 kg</p>
+            </div>
+        </div>
+        <div class="listing_runs">
+            <p>Virk æfing</p>
+            <div>
+                <p>6 x 80 kg</p>
+                <p>5 x 90 kg</p>
+            </div>
+        </div>
+    </div>
+    <div class="exercise_buttons">
+        <a href="{{ url_for('register_set', exercise=exercise) }}">Skrá set</a>
+        <a>Hætta</a>
+    </div>
+</div>
+{% endblock %}
