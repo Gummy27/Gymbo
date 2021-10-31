@@ -1,0 +1,78 @@
+{
+    "exercises" : [
+        "Squat",
+        "Leg press",
+        "Lunge",
+        "Deadlift",
+        "Leg extension",
+        "Leg curl",
+        "Standing calf raise",
+        "Seated calf raise",
+        "Hip adductor",
+        "Bench press",
+        "Chest fly",
+        "Push-up",
+        "Pull-down",
+        "Pull-up",
+        "Bent-over row",
+        "Upright row",
+        "Shoulder press",
+        "Shoulder fly",
+        "Lateral raise",
+        "Shoulder shrug",
+        "Pushdown",
+        "Triceps extension",
+        "Biceps curl",
+        "Crunch",
+        "Russian twist",
+        "Leg raise",
+        "Back extension" 
+    ],
+
+    "personal_bests" : [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        55,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+    ],
+
+    "prev_workouts" : {
+        "2021-10-31" : {
+            "9" : [
+                "45x8",
+                "50x5",
+                "50x4",
+                "100x5"
+            ],
+            "13" : [
+                "60x8",
+                "70x5",
+                "70x5",
+                "75x2"
+            ]
+        }
+    }
+}

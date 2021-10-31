@@ -136,11 +136,9 @@ body {
     padding-left: 100px;
 }
 
-.exercise_buttons {
-}
-
 .exercise_buttons a {
     position: absolute;
+    text-decoration: none;
 
     text-align: center;
     font-size: 4em;
@@ -161,4 +159,26 @@ body {
 
 .register_set_form {
     font-size: 4em;
+    padding-bottom: 30px;
+}
+
+.register_set_input {
+    display: grid;
+    
+    grid-template-columns: 1fr 1fr;
+    justify-content: right;
+    padding-top: 80px;
+}
+
+.register_set_input p {
+    margin: 0;
+    padding-right: 30px;
+}
+
+.register_set_input input {
+    font-size: 60px;
+    border: none;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    width: 50%;
 }
