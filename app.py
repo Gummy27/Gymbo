@@ -1,9 +1,14 @@
 from flask import Flask, render_template, url_for
 from flask_assets import Environment, Bundle
-from data_handler import Data_handler
 import os
+from datetime import date
+
+from data_handler import Data_handler
+from new_workout import New_workout
 
 data = Data_handler()
+
+new_workout = New_workout(date.today())
 
 app = Flask(__name__)
 
@@ -13,6 +18,7 @@ def home():
 
 @app.route("/select_exercise")
 def select_exercise():
+    
     return render_template("select_exercise.html",
             exercises=data.get_list_of_exercises()
         )

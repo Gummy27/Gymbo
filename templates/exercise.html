@@ -6,15 +6,23 @@
     <div>
         <div class="display_max">
             <p>Max:</p>
-            <p>{{ pb }} kg</p>
+            {% if pb %}
+                <p>{{ pb }} kg</p>
+            {% else %}
+                <p>Ekki skráð</p>
+            {% endif %}
         </div>
         <div class="listing_runs">
-            <p>Fyrri æfing {{ date }}</p>
-            <div>
-                {% for set in sets %}
-                    <p>{{ set }} kg</p>
-                {% endfor %}
-            </div>
+            {% if date %}
+                <p>Fyrri æfing {{ date }}</p>
+                <div>
+                    {% for set in sets %}
+                        <p>{{ set }} kg</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Engar fyrri æfingar</p>
+            {% endif %}
         </div>
         <div class="listing_runs">
             <p>Virk æfing</p>
