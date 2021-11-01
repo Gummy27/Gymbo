@@ -21,7 +21,6 @@ class Data_handler:
 
     def find_prev_workout(self, exercise):
         index = self.exercise_to_index(exercise)
-        print("This is running for some reason!", exercise, index)
 
         for date in self.__prev_workouts:
             if index in self.__prev_workouts[date]:
@@ -33,6 +32,11 @@ class Data_handler:
 
         return self.__personal_bests[int(index)]
 
+    def new_personal_best(self, exercise, weight):
+        index = self.exercise_to_index(exercise)
+
+        self.__personal_bests[int(index)] = weight
+
     def add(self, new_workout: New_workout):
         date, sets = new_workout.into_dict()
 
@@ -40,6 +44,15 @@ class Data_handler:
 
         print(self.__prev_workouts)
 
+    def save_to_file(self):
+        file_dict = {}
+
+        file_dict["exercises"] = self.__exercise_keys
+        file_dict["personal_bests"] = self.__personal_bests
+        file_dict["prev_workouts"] = self.__prev_workouts
+
+        with open("static/data.json", 'w') as file:
+            json.dump(file_dict, file)
 
 def main():
     data = Data_handler()   

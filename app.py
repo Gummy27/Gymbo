@@ -14,8 +14,11 @@ new_workout = New_workout(str(date.today()))
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/", methods=["POST", "GET"])
 def home():
+    if request.method == "POST":
+        data.save_to_file()
+
     return render_template("home.html")
 
 @app.route("/select_exercise", methods=["POST", "GET"])
@@ -58,9 +61,16 @@ def exercise(exercise):
 def register_set(exercise):
     if request.method == "POST":
 
+        pb = data.find_personal_best(exercise)
         reps = request.form.get("reps")
-        weight = request.form.get("weight")
+        weight = int(request.form.get("weight"))
         
+        if pb == None:
+            data.new_personal_best(exercise, weight)
+        elif weight > int(pb):
+            data.new_personal_best(exercise, weight)
+
+
         reps_weight = f"{weight}x{reps}"
 
         new_workout.add(data.exercise_to_index(exercise), reps_weight)
