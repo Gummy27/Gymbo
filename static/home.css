@@ -136,24 +136,37 @@ body {
     padding-left: 100px;
 }
 
-.exercise_buttons a {
-    position: absolute;
-    text-decoration: none;
+.button_style{    
+    font-family: "Times New Roman";
 
     text-align: center;
-    font-size: 4em;
+    font-size: 70px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 350px;
+
+    border: 0;
+}
+
+.exercise_buttons a, .exercise_buttons input{
+    position: absolute;
+    text-decoration: none;
+    border: 0;
+    font-family: 'Times New Roman', Times, serif;
+
+    text-align: center;
+    font-size: 70px;
     background-color: lightgray;
     padding-top: 30px;
     padding-bottom: 30px;
     width: 350px;
-}
 
-.exercise_buttons a:first-child {
-    top: 90%;
+    top: 90%
 }
-
-.exercise_buttons a:nth-child(2) {
-    top: 90%;
+.exercise_buttons :nth-child(1) {
+    right: 55%;
+}
+.exercise_buttons :nth-child(2) {
     left: 55%;
 }
 
@@ -181,4 +194,12 @@ body {
     background-color: #f2f2f2;
     border-radius: 8px;
     width: 50%;
+}
+
+.finish_workout_button {
+    position: absolute;
+
+    background-color: white;
+    top: 80%;
+    width: 80%;
 }

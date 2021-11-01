@@ -1,4 +1,5 @@
 import json
+from new_workout import New_workout
 
 class Data_handler:
     def __init__(self) -> None:
@@ -20,6 +21,7 @@ class Data_handler:
 
     def find_prev_workout(self, exercise):
         index = self.exercise_to_index(exercise)
+        print("This is running for some reason!", exercise, index)
 
         for date in self.__prev_workouts:
             if index in self.__prev_workouts[date]:
@@ -31,10 +33,22 @@ class Data_handler:
 
         return self.__personal_bests[int(index)]
 
-def main():
-    data = Data_handler()
+    def add(self, new_workout: New_workout):
+        date, sets = new_workout.into_dict()
 
-    print(data.find_personal_best("Bench press"))
+        self.__prev_workouts[date] = sets
+
+        print(self.__prev_workouts)
+
+
+def main():
+    data = Data_handler()   
+    new_workout = New_workout("2021-11-2")
+
+    new_workout.add(0, "40x7")
+    date, sets = new_workout.into_dict()
+
+    data.add(date, sets)
 
 
 if __name__ == "__main__":

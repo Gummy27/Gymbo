@@ -4,21 +4,23 @@
 
 <div class="register_set">
     <p class="page_title">Skrá {{ exercise }} set</p>
-    <form class="register_set_form">
-        <div class="register_set_input">
-            <p> Reps: </p>
-            <input type="number" value=5>
-        </div>
-        <div class="register_set_input">
-            <p> Þyngd: </p>
-            <input type="number" value=100>
+    <form method="POST">
+        <div class="register_set_form" >
+            <div class="register_set_input">
+                <p> Reps: </p>
+                <input type="number" name="reps" value=5>
+            </div>
+            <div class="register_set_input">
+                <p> Þyngd: </p>
+                <input type="number" name="weight" value=100>
+            </div>
+        
+            <div class="exercise_buttons button_style">
+                <input type="submit" value="Skrá sett">
+                <a href="{{ url_for('exercise', exercise=exercise) }}">Hætta</a>
+            </div>
         </div>
     </form>
-    
-    <div class="exercise_buttons">
-        <a href="{{ url_for('exercise', exercise=exercise) }}">Vista</a>
-        <a>Hætta</a>
-    </div>
 </div>
 
 {% endblock %}
