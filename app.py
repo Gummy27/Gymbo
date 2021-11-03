@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for, request, session
 from flask_session import Session
 
+import os
+
 from datetime import date
 
 from random import randint
@@ -11,8 +13,12 @@ from data_handler import Data_handler
 from new_workout import New_workout
 
 app = Flask(__name__)
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["SECRET_KEY"] = os.urandom(24)
+app.config["SESSION_COOKIE_NAME"] = "my_session"
+
 Session(app)
 
 data = Data_handler()
