@@ -1,4 +1,6 @@
 from flask import Flask, render_template, url_for, request, session
+from flask_session import Session
+
 from datetime import date
 
 from random import randint
@@ -8,11 +10,18 @@ from werkzeug.utils import redirect
 from data_handler import Data_handler
 from new_workout import New_workout
 
+app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
+
 data = Data_handler()
 
-session["new_workout"] = New_workout(str(date.today()))
 
-app = Flask(__name__)
+@app.before_first_request
+def intitialize_session():
+    session["new_workout"] = New_workout(str(date.today()))
+
 
 @app.route("/", methods=["POST", "GET"])
 def home():
