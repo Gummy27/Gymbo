@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, session
 from datetime import date
 
 from random import randint
@@ -10,7 +10,7 @@ from new_workout import New_workout
 
 data = Data_handler()
 
-new_workout = New_workout(str(date.today()))
+session["new_workout"] = New_workout(str(date.today()))
 
 app = Flask(__name__)
 
@@ -24,10 +24,10 @@ def home():
 @app.route("/select_exercise", methods=["POST", "GET"])
 def select_exercise():
     if request.method == "POST":
-        print("This is the active workout!", new_workout.into_dict())
+        print("This is the active workout!", session["new_workout"].into_dict())
 
-        data.add(new_workout)
-        new_workout.clear()
+        data.add(session["new_workout"])
+        session["new_workout"].clear()
 
         return redirect(url_for("home"))
         
@@ -38,7 +38,7 @@ def select_exercise():
 
 @app.route("/overview/<exercise>/<index>", methods=["POST", "GET"])
 def exercise(exercise, index):
-    active_workout = new_workout.current_exercise(data.exercise_to_index(exercise))
+    active_workout = session["new_workout"].current_exercise(data.exercise_to_index(exercise))
 
     if request.method == "POST":
         print("This is the active workout!", active_workout)
@@ -73,7 +73,7 @@ def register_set(exercise):
 
         reps_weight = f"{weight}x{reps}"
 
-        new_workout.add(data.exercise_to_index(exercise), reps_weight)
+        session["new_workout"].add(data.exercise_to_index(exercise), reps_weight)
 
 
         return redirect(url_for("exercise", exercise=exercise, index=randint(0, 100)))
