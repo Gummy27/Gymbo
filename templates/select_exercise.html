@@ -8,7 +8,7 @@
     </div>
     <div class="listing_exercises">
         {% for exercise in exercises %}
-        <a href="{{ url_for('exercise', exercise=exercise) }}">
+        <a href="{{ url_for('exercise', exercise=exercise, index='0') }}">
             <img src="static/images/exercises/placeholder.jpg" 
                 alt="{{ exercise }}" 
                 >

@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for, request
 from datetime import date
 
+from random import randint
+
 from werkzeug.utils import redirect
 
 from data_handler import Data_handler
@@ -34,8 +36,8 @@ def select_exercise():
             exercises=data.get_list_of_exercises()
         )
 
-@app.route("/overview/<exercise>", methods=["POST", "GET"])
-def exercise(exercise):
+@app.route("/overview/<exercise>/<index>", methods=["POST", "GET"])
+def exercise(exercise, index):
     active_workout = new_workout.current_exercise(data.exercise_to_index(exercise))
 
     if request.method == "POST":
@@ -74,7 +76,7 @@ def register_set(exercise):
         new_workout.add(data.exercise_to_index(exercise), reps_weight)
 
 
-        return redirect(url_for("exercise", exercise=exercise))
+        return redirect(url_for("exercise", exercise=exercise, index=randint(0, 100)))
 
     return render_template("register_set.html", 
             exercise=exercise
