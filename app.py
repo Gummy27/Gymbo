@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, session
+from flask import Flask, render_template, url_for, request, session, redirect
 from flask_session import Session
 
 import os
@@ -7,32 +7,28 @@ from datetime import date
 
 from random import randint
 
-from werkzeug.utils import redirect
-
 from data_handler import Data_handler
 from new_workout import New_workout
 
 app = Flask(__name__)
 
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["SECRET_KEY"] = os.urandom(24)
 app.config["SESSION_COOKIE_NAME"] = "my_session"
 
 Session(app)
 
-data = Data_handler()
-
-
 @app.before_first_request
 def intitialize_session():
     session["new_workout"] = New_workout(str(date.today()))
+    session["data"] = Data_handler()
 
 
 @app.route("/", methods=["POST", "GET"])
 def home():
     if request.method == "POST":
-        data.save_to_file()
+        session["data"].save_to_file()
 
     return render_template("home.html")
 
@@ -41,26 +37,26 @@ def select_exercise():
     if request.method == "POST":
         print("This is the active workout!", session["new_workout"].into_dict())
 
-        data.add(session["new_workout"])
+        session["data"].add(session["new_workout"])
         session["new_workout"].clear()
 
         return redirect(url_for("home"))
         
 
     return render_template("select_exercise.html",
-            exercises=data.get_list_of_exercises()
+            exercises=session["data"].get_list_of_exercises()
         )
 
 @app.route("/overview/<exercise>/<index>", methods=["POST", "GET"])
 def exercise(exercise, index):
-    active_workout = session["new_workout"].current_exercise(data.exercise_to_index(exercise))
+    active_workout = session["new_workout"].current_exercise(session["data"].exercise_to_index(exercise))
 
     if request.method == "POST":
         print("This is the active workout!", active_workout)
         
 
-    date, sets = data.find_prev_workout(exercise)
-    pb = data.find_personal_best(exercise)
+    date, sets = session["data"].find_prev_workout(exercise)
+    pb = session["data"].find_personal_best(exercise)
 
     print("This is new workout", active_workout)
 
@@ -76,19 +72,19 @@ def exercise(exercise, index):
 def register_set(exercise):
     if request.method == "POST":
 
-        pb = data.find_personal_best(exercise)
+        pb = session["data"].find_personal_best(exercise)
         reps = request.form.get("reps")
         weight = int(request.form.get("weight"))
         
         if pb == None:
-            data.new_personal_best(exercise, weight)
+            session["data"].new_personal_best(exercise, weight)
         elif weight > int(pb):
-            data.new_personal_best(exercise, weight)
+            session["data"].new_personal_best(exercise, weight)
 
 
         reps_weight = f"{weight}x{reps}"
 
-        session["new_workout"].add(data.exercise_to_index(exercise), reps_weight)
+        session["new_workout"].add(session["data"].exercise_to_index(exercise), reps_weight)
 
 
         return redirect(url_for("exercise", exercise=exercise, index=randint(0, 100)))
