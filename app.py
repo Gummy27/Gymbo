@@ -93,6 +93,10 @@ def register_set(exercise):
             exercise=exercise
         )
 
+@app.route("/json")
+def json():
+    return session["data"].get_json() 
+
 if(__name__ == "__main__"):
     app.run(debug=True)
     app.send_file_max_age_default = 0

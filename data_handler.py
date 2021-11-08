@@ -5,13 +5,16 @@ class Data_handler:
     def __init__(self) -> None:
         try:
             with open("static/data.json", 'r') as file:
-                data = json.load(file)
-                self.__personal_bests = data["personal_bests"]
-                self.__prev_workouts = data["prev_workouts"]
-                self.__exercise_keys = data["exercises"]
+                self.__data = json.load(file)
+                self.__personal_bests = self.__data["personal_bests"]
+                self.__prev_workouts = self.__data["prev_workouts"]
+                self.__exercise_keys = self.__data["exercises"]
         except FileNotFoundError as err:
             print(f"Data handler has crashed: {err}")
             raise
+    
+    def get_json(self):
+        return self.__data
     
     def get_list_of_exercises(self):
         return self.__exercise_keys
