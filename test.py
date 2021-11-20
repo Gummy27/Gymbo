@@ -1,6 +1,5 @@
 import pyodbc
 from new_workout import New_workout
-from datetime import date, datetime
 
 class Data_handler:
     def __init__(self) -> None:
@@ -102,3 +101,5 @@ class Data_handler:
         personal_best = list(self.__cursor)[0][0]
 
         return personal_best
+
+Data_handler()
