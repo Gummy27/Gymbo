@@ -10,7 +10,6 @@ class New_workout:
             self.exercises[exercise_tag] = [set]
 
     def into_dict(self):
-
         return self.date, self.exercises
     
     def clear(self):

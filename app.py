@@ -76,13 +76,14 @@ def register_set(exercise):
         reps = request.form.get("reps")
         weight = int(request.form.get("weight"))
         
-        if pb == None:
-            session["data"].new_personal_best(exercise, weight)
-        elif weight > int(pb):
-            session["data"].new_personal_best(exercise, weight)
-
-
         reps_weight = f"{weight}x{reps}"
+
+        if pb == None:
+            session["data"].new_personal_best(exercise, reps_weight, True)
+        elif weight > int(pb):
+            session["data"].new_personal_best(exercise, reps_weight)
+
+
 
         session["new_workout"].add(session["data"].exercise_to_index(exercise), reps_weight)
 
@@ -92,10 +93,6 @@ def register_set(exercise):
     return render_template("register_set.html", 
             exercise=exercise
         )
-
-@app.route("/json")
-def json():
-    return session["data"].get_json() 
 
 if(__name__ == "__main__"):
     app.run(debug=True)
