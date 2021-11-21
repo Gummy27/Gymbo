@@ -74,14 +74,17 @@ def register_set(exercise):
     if request.method == "POST":
 
         pb = data.find_personal_best(exercise)
+
+        pb_weight = pb.split("x")[0] if pb else 0
+
         reps = request.form.get("reps")
         weight = int(request.form.get("weight"))
         
         reps_weight = f"{weight}x{reps}"
-
+        print(reps_weight)
         if pb == None:
             data.new_personal_best(exercise, reps_weight, True)
-        elif weight > int(pb):
+        elif weight > int(pb_weight):
             data.new_personal_best(exercise, reps_weight)
 
 

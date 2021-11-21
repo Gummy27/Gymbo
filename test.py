@@ -29,6 +29,20 @@ class Data_handler:
         except IndexError:
             return None
 
+    # ------------------- Sql. methods --------------------
+    def select_command(self, command):
+        try:
+            self.__cursor.execute(command)
+
+            return list(self.__cursor)
+        except pyodbc.ProgrammingError:
+            return None
+
+    def insert_command(self, command):
+        self.__cursor.execute(command)
+        self.__conn.commit()
+
+
     # ------------------- Write methods -------------------
     def add(self, new_workout: New_workout) -> None:
         '''
@@ -38,12 +52,13 @@ class Data_handler:
         date, sets = new_workout.into_dict()
 
         sql_command = "insert into exercises(day, exercise, sets) Values"
+
         for exercise in sets:
             formatted_set = ' '.join(sets[exercise])
             sql_command += f" ('{date}', {int(exercise)}, '{formatted_set}'),"
+        sql_command = sql_command[:-1]+";"
 
-        self.__cursor.execute(sql_command[:-1]+";")
-        self.__conn.commit()
+        self.insert_command(sql_command)
     
     def new_personal_best(self, exercise: str, set: str, empty_pb=False) -> None:
         '''
@@ -53,12 +68,12 @@ class Data_handler:
         id = self.exercise_to_index(exercise)
 
         if empty_pb:
-            sql_command = f"insert into personal_best(id, record) values({id}, {set});"
+            sql_command = f"insert into personal_best(id, record) values({id}, '{set}');"
         else:
             sql_command = f"update personal_best set record='{set}' where id = {id};"
 
-        self.__cursor.execute(sql_command)
-        self.__conn.commit()
+        print("This is the sql command: ", sql_command)
+        self.insert_command(sql_command)
 
 
     # ------------------- Read methods -------------------
@@ -66,9 +81,9 @@ class Data_handler:
         ''' 
             This function will return a list of exercises.
         '''
-        self.__cursor.execute("select exercise from exercise_keys;")
+        sql_table = self.select_command("select exercise from exercise_keys;")
 
-        return [x[0] for x in self.__cursor]
+        return [x[0] for x in sql_table]
 
 
     def find_prev_workout(self, exercise: str) -> list:
@@ -78,14 +93,17 @@ class Data_handler:
         '''
         id = self.exercise_to_index(exercise)
 
-        sql_command = f"select top 1 sets from exercises where exercise = {id} order by day desc;"
+        sql_command = f"select top 1 day, sets from exercises where exercise = {id} order by day desc;"
 
-        self.__cursor.execute(sql_command)
+        sql_table = self.select_command(sql_command)
 
-        set_list = list(self.__cursor)[0][0] # We only want one column
-        set_list = list(set_list.split(" "))
+        if sql_table:
+            date, sets = list(sql_table)[0]
+            sets = list(sets.split(" "))
 
-        return set_list
+            return str(date), sets
+        else:
+            return None, None
 
     def find_personal_best(self, exercise: str) -> str:
         '''
@@ -96,10 +114,14 @@ class Data_handler:
 
         sql_command = f"select record from personal_best where id = {id};"
 
-        self.__cursor.execute(sql_command)
+        sql_table = self.select_command(sql_command)
 
-        personal_best = list(self.__cursor)[0][0]
+        try:
+            personal_best = list(sql_table)[0][0]
+            return personal_best
+        except IndexError:
+            return None
 
-        return personal_best
-
-Data_handler()
+if __name__ == "__main__":
+    data = Data_handler()
+    print(data.select_command("no"))
