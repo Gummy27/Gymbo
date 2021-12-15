@@ -1,3 +1,4 @@
+# This is a program for gym guys
 from flask import Flask, render_template, url_for, request
 from datetime import date
 
